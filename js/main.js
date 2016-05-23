@@ -1,44 +1,9 @@
 var scene, camera, renderer;
 
 setup();
-
-class Cubee {
-  constructor() {
-
-  }
-  nep() {
-    var geometry = new THREE.BoxGeometry(150, 1, 1);
-    var material = new THREE.MeshBasicMaterial({
-      color: 0x00ff00
-    });
-    var cube = new THREE.Mesh(geometry, material);
-    cube.position.x = 0;
-    cube.position.y = 0;
-    cube.position.z = 0;
-    return cube;
-  }
-
-}
-var cube = new Cubee().nep();
-var lcurve = new THREE.LineCurve3(new THREE.Vector3(0,0,0), new THREE.Vector3(100,100,50));
-var geometry = new THREE.TubeGeometry(
-    lcurve,  //path
-    20,    //segments
-    2,     //radius
-    8,     //radiusSegments
-    false  //closed
-);
-var material = new THREE.MeshBasicMaterial({
-  color: 0x00ff00
-});
-var tube = new THREE.Mesh(geometry, material);
-
-scene.add(cube);
-scene.add(tube);
-
 render();
 
-//set's up basic scene
+//sets up basic scene
 function setup() {
   //Scene Setup
   scene = new THREE.Scene();
@@ -66,7 +31,7 @@ function setup() {
   renderer.gammaOutput = true;
   renderer.shadowMap.enabled = true;
 
-  //End of setup
+  //Floor setup
   var fgeo = new THREE.BoxGeometry(100, 2, 100);
   var fmat = new THREE.MeshBasicMaterial({
     color: 0xd3d3d3
@@ -74,24 +39,33 @@ function setup() {
   var floor = new THREE.Mesh(fgeo, fmat);
   floor.position.y = -2;
   scene.add(floor);
+  //End of setup
+
+  lastOrigin = new THREE.Vector3(0, 0, 0);
 }
+
+var lastOrigin = new THREE.Vector3(0, 0, 0);
 
 function render() {
   requestAnimationFrame(render);
 
-  // var geometry = new THREE.SphereGeometry(1,8,6);
-  // var material = new THREE.MeshBasicMaterial({
-  //   color: 0x000000
-  // });
-  // var point = new THREE.Mesh(geometry, material);
-  // point.position.x = -100 + Math.random() * 200;
-  // point.position.y = Math.random()*100;
-  // point.position.z = -100 + Math.random()*200;
-  // scene.add(point);
+  var destination = new THREE.Vector3(-100 + Math.random() * 200,
+    Math.random() * 100, -100 + Math.random() * 200
+  );
+  var lcurve = new THREE.LineCurve3(lastOrigin, destination);
+  var geometry = new THREE.TubeGeometry(
+    lcurve, //path
+    20, //segments
+    0.1, //radius
+    8, //radiusSegments
+    false //closed
+  );
+  var material = new THREE.MeshBasicMaterial({
+    color: 0x00ff00
+  });
+  var tube = new THREE.Mesh(geometry, material);
 
-  cube.rotation.x += 0;
-  cube.rotation.y += 0.1;
-
-
+  scene.add(tube);
   renderer.render(scene, camera);
+  lastOrigin = destination;
 }
