@@ -1,7 +1,14 @@
 var scene, camera, renderer;
+var trunk = new Branch(new THREE.Vector3(0, 0, 0));
 
 setup();
-render();
+loop();
+
+function loop() {
+  requestAnimationFrame(loop);
+  trunk.grow(scene);
+  renderer.render(scene, camera);
+}
 
 //sets up basic scene
 function setup() {
@@ -42,30 +49,4 @@ function setup() {
   //End of setup
 
   lastOrigin = new THREE.Vector3(0, 0, 0);
-}
-
-var lastOrigin = new THREE.Vector3(0, 0, 0);
-
-function render() {
-  requestAnimationFrame(render);
-
-  var destination = new THREE.Vector3(-100 + Math.random() * 200,
-    Math.random() * 100, -100 + Math.random() * 200
-  );
-  var lcurve = new THREE.LineCurve3(lastOrigin, destination);
-  var geometry = new THREE.TubeGeometry(
-    lcurve, //path
-    20, //segments
-    0.1, //radius
-    8, //radiusSegments
-    false //closed
-  );
-  var material = new THREE.MeshBasicMaterial({
-    color: 0x00ff00
-  });
-  var tube = new THREE.Mesh(geometry, material);
-
-  scene.add(tube);
-  renderer.render(scene, camera);
-  lastOrigin = destination;
 }
