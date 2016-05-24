@@ -14,6 +14,10 @@ var Branch = function (origin) {
     y: 1,
     z: 0
   };
+
+  this.material = new THREE.MeshBasicMaterial({
+    color: 0x000000
+  });
 };
 
 
@@ -29,9 +33,9 @@ Branch.prototype.grow = function (scene) {
   var newY = newPos('y');
   var newZ = newPos('z');
 
-  if (newY < 0 || newY > 200 || 
-      newZ < -100 || newZ > 100 ||
-      newX < -100 || newX > 100) {
+  if (newY < 0 || newY > 200 ||
+    newZ < -100 || newZ > 100 ||
+    newX < -100 || newX > 100) {
     randomizeDir();
     return;
   }
@@ -48,18 +52,25 @@ Branch.prototype.grow = function (scene) {
     true //opened
   );
 
-  this.material = new THREE.MeshBasicMaterial({
-    color: 0x00ff00
-  });
-
   var tube = new THREE.Mesh(geometry, this.material);
 
+  //Update color using dirs
+//  var colt = hexToRgb(this.material.color);
+
+  this.material.color.r += Math.abs(this.direction.x);
+  this.material.color.g += Math.abs(this.direction.y);
+  this.material.color.b += Math.abs(this.direction.z);
+
+//  var hex = rgbToHex(colt.r, colt.g, colt.b);
+  //this.material.color = 0x00ff00;//parseInt(hex,16);
+  console.log(this.material.color);
   scene.add(tube);
 
   this.topPoint = destination;
 
   randomizeDir();
 
+  //Helper functions.
   function randomizeDir() {
     //we want our dir to be from -1 to 
     thisBranch.direction.x = (Math.random() * 2) - 1;
@@ -71,3 +82,27 @@ Branch.prototype.grow = function (scene) {
     return thisBranch.topPoint[dimension] + (thisBranch.direction[dimension] * thisBranch.maxSegmentLenght);
   }
 };
+
+function hexToRgb(hex) {
+  var bigint = parseInt(hex, 16);
+  var r = (bigint >> 16) & 255;
+  var g = (bigint >> 8) & 255;
+  var b = bigint & 255;
+
+  return {
+    r: r,
+    g: g,
+    b: b
+  };
+}
+
+function rgbToHex(R, G, B) {
+  return toHex(R) + toHex(G) + toHex(B)
+}
+
+function toHex(n) {
+  n = parseInt(n, 10);
+  if (isNaN(n)) return "00";
+  n = Math.max(0, Math.min(n, 255));
+  return "0123456789ABCDEF".charAt((n - n % 16) / 16) + "0123456789ABCDEF".charAt(n % 16);
+}
