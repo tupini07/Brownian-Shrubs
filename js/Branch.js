@@ -22,7 +22,7 @@ var Branch = function (origin) {
 
 
 /**
- * Conceptually grows and renders the branch 
+ * Conceptually grows and renders the branch
  * @param {THREE.Scene} scene The scene to which the branch belongs
  */
 Branch.prototype.grow = function (scene) {
@@ -63,7 +63,7 @@ Branch.prototype.grow = function (scene) {
 
 //  var hex = rgbToHex(colt.r, colt.g, colt.b);
   //this.material.color = 0x00ff00;//parseInt(hex,16);
-  console.log(this.material.color);
+//  console.log(this.material.color);
   scene.add(tube);
 
   this.topPoint = destination;
@@ -72,7 +72,7 @@ Branch.prototype.grow = function (scene) {
 
   //Helper functions.
   function randomizeDir() {
-    //we want our dir to be from -1 to 
+    //we want our dir to be from -1 to
     thisBranch.direction.x = (Math.random() * 2) - 1;
     thisBranch.direction.y = (Math.random() * 2) - 1;
     thisBranch.direction.z = (Math.random() * 2) - 1;

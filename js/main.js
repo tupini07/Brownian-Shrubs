@@ -1,4 +1,4 @@
-var scene, camera, renderer;
+var scene, camera, renderer, controls;
 var trunk = new Branch(new THREE.Vector3(0, 0, 0));
 
 setup();
@@ -7,6 +7,8 @@ loop();
 function loop() {
   requestAnimationFrame(loop);
   trunk.grow(scene);
+
+  controls.update();
   renderer.render(scene, camera);
 }
 
@@ -38,6 +40,13 @@ function setup() {
   renderer.gammaOutput = true;
   renderer.shadowMap.enabled = true;
 
+  //FirstPerson Controls Setup
+  controls = new THREE.FirstPersonControls( camera );
+  controls.movementSpeed = 70;
+  controls.lookSpeed = 20;
+  controls.noFly = false;
+  controls.lookVertical = true;
+
   //Floor setup
   var fgeo = new THREE.BoxGeometry(100, 2, 100);
   var fmat = new THREE.MeshBasicMaterial({
@@ -47,6 +56,7 @@ function setup() {
   floor.position.y = -2;
   scene.add(floor);
   //End of setup
+
 
   lastOrigin = new THREE.Vector3(0, 0, 0);
 }
