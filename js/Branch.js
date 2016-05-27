@@ -16,7 +16,7 @@ var Branch = function (origin) {
   };
 
   this.material = new THREE.MeshBasicMaterial({
-    color: 0x38cb65
+    color: 0x00ff00
   });
 };
 
