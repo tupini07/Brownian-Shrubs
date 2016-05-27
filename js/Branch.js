@@ -57,9 +57,9 @@ Branch.prototype.grow = function (scene) {
   //Update color using dirs
 //  var colt = hexToRgb(this.material.color);
 
-  this.material.color.r += Math.abs(this.direction.x);
-  this.material.color.g += Math.abs(this.direction.y);
-  this.material.color.b += Math.abs(this.direction.z);
+  //this.material.color.r += Math.abs(this.direction.x);
+  //this.material.color.g += Math.abs(this.direction.y);
+  //this.material.color.b += Math.abs(this.direction.z);
 
 //  var hex = rgbToHex(colt.r, colt.g, colt.b);
   //this.material.color = 0x00ff00;//parseInt(hex,16);
