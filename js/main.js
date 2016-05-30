@@ -40,13 +40,6 @@ function setup() {
   renderer.gammaOutput = true;
   renderer.shadowMap.enabled = true;
 
-  //FirstPerson Controls Setup
-  controls = new THREE.FirstPersonControls( camera );
-  controls.movementSpeed = 70;
-  controls.lookSpeed = 20;
-  controls.noFly = false;
-  controls.lookVertical = true;
-
   //Floor setup
   var fgeo = new THREE.BoxGeometry(100, 2, 100);
   var fmat = new THREE.MeshBasicMaterial({
@@ -59,4 +52,12 @@ function setup() {
 
 
   lastOrigin = new THREE.Vector3(0, 0, 0);
+
+
+  controls = new THREE.OrbitControls(camera);
+  controls.addEventListener('change', function () {
+    renderer.render(scene, camera);
+  });
+
+
 }
