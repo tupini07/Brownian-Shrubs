@@ -2,9 +2,12 @@
  * Constructs a new Branch
  * @param {THREE.Vector3} origin The starting point of the branch
  */
-var Branch = function (origin) {
+var Branch = function (origin, genes) {
   this.topPoint = origin;
-  this.maxSegmentLenght = 2;
+
+  this.genes = genes;
+
+  this.segments = 0; //always start in 0
 
   //Directions are represented as a Vector3 where dirx*i+diry*j+dirz*k and
   //each dir is the magnitude that can go from 0 to 1 and multiplies the max segment lenght
@@ -37,7 +40,10 @@ Branch.prototype.grow = function (scene) {
     newZ < -100 || newZ > 100 ||
     newX < -100 || newX > 100) {
     randomizeDir();
-    return;
+    return true;
+  } else {
+    //direction is ok and branch is going to grow
+    thisBranch.segments += 1;
   }
 
   var destination = new THREE.Vector3(newX, newY, newZ);
@@ -47,23 +53,12 @@ Branch.prototype.grow = function (scene) {
   var geometry = new THREE.TubeGeometry(
     lcurve, //path
     20, //segments
-    0.2, //radius
+    thisBranch.genes.radius, //radius
     8, //radiusSegments
     true //opened
   );
 
   var tube = new THREE.Mesh(geometry, this.material);
-
-  //Update color using dirs
-//  var colt = hexToRgb(this.material.color);
-
-  //this.material.color.r += Math.abs(this.direction.x);
-  //this.material.color.g += Math.abs(this.direction.y);
-  //this.material.color.b += Math.abs(this.direction.z);
-
-//  var hex = rgbToHex(colt.r, colt.g, colt.b);
-  //this.material.color = 0x00ff00;//parseInt(hex,16);
-//  console.log(this.material.color);
   scene.add(tube);
 
   this.topPoint = destination;
@@ -79,30 +74,24 @@ Branch.prototype.grow = function (scene) {
   }
 
   function newPos(dimension) {
-    return thisBranch.topPoint[dimension] + (thisBranch.direction[dimension] * thisBranch.maxSegmentLenght);
+    return thisBranch.topPoint[dimension] + (thisBranch.direction[dimension] * thisBranch.genes.segmentLenght);
   }
+
+  if (thisBranch.segments % thisBranch.genes.lenghtSubbranch === 0){
+    thisBranch.spawnSubB();
+  }
+
+  //add to segments, if segments > maxSegments then stop growing
+  if (thisBranch.segments > thisBranch.genes.maxSegments) {
+    return false;
+  } else {
+    return true;
+  }
+
 };
 
-function hexToRgb(hex) {
-  var bigint = parseInt(hex, 16);
-  var r = (bigint >> 16) & 255;
-  var g = (bigint >> 8) & 255;
-  var b = bigint & 255;
 
-  return {
-    r: r,
-    g: g,
-    b: b
-  };
-}
+//Branch should be inside a tree and the tree should be in charge of drawing it's branches and holding the specimen's genes
+Branch.prototype.spawnSubB = function() {
 
-function rgbToHex(R, G, B) {
-  return toHex(R) + toHex(G) + toHex(B)
-}
-
-function toHex(n) {
-  n = parseInt(n, 10);
-  if (isNaN(n)) return "00";
-  n = Math.max(0, Math.min(n, 255));
-  return "0123456789ABCDEF".charAt((n - n % 16) / 16) + "0123456789ABCDEF".charAt(n % 16);
 }

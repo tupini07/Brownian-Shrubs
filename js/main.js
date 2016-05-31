@@ -1,12 +1,26 @@
 var scene, camera, renderer, controls;
-var trunk = new Branch(new THREE.Vector3(0, 0, 0));
+var branches = [];
+
+branches.push(new Branch(new THREE.Vector3(0, 0, 0), {
+  segmentLenght: 10,
+  maxSegments: 200,
+  lenghtSubbranch: 100,
+  radius: 0.2,
+}));
 
 setup();
 loop();
 
 function loop() {
   requestAnimationFrame(loop);
-  trunk.grow(scene);
+  for (i in branches) {
+    //if returns false then branch reached is limit, remove from array
+    if (!branches[i].grow(scene)) {
+      branches.splice(i, 1);
+    }
+  }
+
+
 
   controls.update();
   renderer.render(scene, camera);
