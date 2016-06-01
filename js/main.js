@@ -1,10 +1,13 @@
 var scene, camera, renderer, controls;
 var tree = new Tree({
-  segmentLenght: 10,
-  maxSegments: 200,
-  lenghtSubbranch: 100,
-  radius: 0.2,
-  radiusDimP: 0.98, //98% of the radius is passed between segments
+  segmentLenght: 2,
+  maxSegmentsTrunk: 200,
+  maxSegmentsDimP: 0.5, //each child will have x% segments
+  pSubBranch: 0.5, //percentages of segments before new branch is created
+  radius: 1.0,
+  minRadius: 0.5,
+  maxDepth: 10, //max number of members in a chain of branches
+  radiusDimP: 1.0, //98% of the radius is passed between segments
   color: 0x00fff0,
 });
 
@@ -32,7 +35,6 @@ function setup() {
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
   camera.position.z = 150;
   camera.position.y = 60;
-  //  camera.lookAt(new THREE.Vector3( 0, 35, 0 ));
 
 
   //Renderer Setup
@@ -47,6 +49,12 @@ function setup() {
   renderer.gammaInput = true;
   renderer.gammaOutput = true;
   renderer.shadowMap.enabled = true;
+
+  var pointLight = new THREE.PointLight( 0xffffff, 300, 300);
+  pointLight.position.set( 10, 200, 10 );
+
+  scene.add(pointLight);
+
 
   //Floor setup
   var fgeo = new THREE.BoxGeometry(100, 2, 100);

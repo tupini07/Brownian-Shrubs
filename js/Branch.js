@@ -1,6 +1,10 @@
-var Branch = function (origin, baseRadius, tree) {
+var Branch = function (origin, baseRadius, maxSegments, depth, tree) {
+  this.gid = Math.round(Math.random() * maxSegments);
   this.topPoint = origin;
   this.radius = baseRadius;
+  this.maxSegments = maxSegments;
+  this.lenghtSubbranch = tree.genes.pSubBranch !== 0 ? Math.floor(maxSegments * tree.genes.pSubBranch) : 0;
+  this.depth = depth; //current position of the branch in chain
   this.tree = tree;
 
   this.segments = 0; //always start in 0
@@ -14,9 +18,12 @@ var Branch = function (origin, baseRadius, tree) {
     z: 0
   };
 
-  this.material = new THREE.MeshBasicMaterial({
-    color: tree.genes.color
+  this.material = new THREE.MeshLambertMaterial({
+    color: tree.genes.color,
+    side: 2,
+    shading: THREE.FlatShading
   });
+  console.log(this.material);
 };
 
 
@@ -48,14 +55,14 @@ Branch.prototype.grow = function (scene) {
 
   var geometry = new THREE.TubeGeometry(
     lcurve, //path
-    20, //segments
+    thisBranch.tree.genes.segmentLenght, //segments
     thisBranch.radius, //radius
     8, //radiusSegments
-    true //opened
+    false //opened
   );
 
   //  modify next segment's radius
-  thisBranch.spawnBranch.radius = thisBranch.spawnBranch.radius * thisBranch.tree.genes.radiusDimP;
+  thisBranch.radius = thisBranch.radius * thisBranch.tree.genes.radiusDimP;
 
   var tube = new THREE.Mesh(geometry, this.material);
   scene.add(tube);
@@ -76,21 +83,27 @@ Branch.prototype.grow = function (scene) {
     return thisBranch.topPoint[dimension] + (thisBranch.direction[dimension] * thisBranch.tree.genes.segmentLenght);
   }
 
-  if (thisBranch.segments % thisBranch.tree.genes.lenghtSubbranch === 0) {
-    thisBranch.tree.spawnBranch(thisBranch.topPoint, thisBranch.radius);
+  if (thisBranch.lenghtSubbranch !== 0 && thisBranch.segments % thisBranch.lenghtSubbranch === 0) {
+    thisBranch.tree.spawnBranch(thisBranch.topPoint, thisBranch.radius, this.maxSegments, this.depth);
   }
 
   //check if we can kill branch
-  if (thisBranch.radius <= 0){
+  if (thisBranch.radius <= thisBranch.tree.genes.minRadius) {
+    bLog(thisBranch.gid, 'Death by radius')
     return false; //kill branch
   }
 
   //Kill if we have reached the max number of segments
-  if (thisBranch.segments > thisBranch.tree.genes.maxSegments) {
+  if (thisBranch.segments > thisBranch.maxSegments) {
     return false;
   } else {
-    console.log('grow;');
+    bLog(thisBranch.gid, 'Death by segments')
     return true;
   }
 
 };
+
+//temp
+function bLog(id, msg) {
+  console.log('Branch: ' + id + ' - ' + msg);
+}
