@@ -1,26 +1,20 @@
 var scene, camera, renderer, controls;
-var branches = [];
-
-branches.push(new Branch(new THREE.Vector3(0, 0, 0), {
+var tree = new Tree({
   segmentLenght: 10,
   maxSegments: 200,
   lenghtSubbranch: 100,
   radius: 0.2,
-}));
+  radiusDimP: 0.98, //98% of the radius is passed between segments
+  color: 0x00fff0,
+});
 
 setup();
 loop();
 
 function loop() {
   requestAnimationFrame(loop);
-  for (i in branches) {
-    //if returns false then branch reached is limit, remove from array
-    if (!branches[i].grow(scene)) {
-      branches.splice(i, 1);
-    }
-  }
 
-
+  tree.grow(scene);
 
   controls.update();
   renderer.render(scene, camera);

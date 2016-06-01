@@ -1,11 +1,7 @@
-/**
- * Constructs a new Branch
- * @param {THREE.Vector3} origin The starting point of the branch
- */
-var Branch = function (origin, genes) {
+var Branch = function (origin, baseRadius, tree) {
   this.topPoint = origin;
-
-  this.genes = genes;
+  this.radius = baseRadius;
+  this.tree = tree;
 
   this.segments = 0; //always start in 0
 
@@ -19,7 +15,7 @@ var Branch = function (origin, genes) {
   };
 
   this.material = new THREE.MeshBasicMaterial({
-    color: 0x00ff00
+    color: tree.genes.color
   });
 };
 
@@ -53,10 +49,13 @@ Branch.prototype.grow = function (scene) {
   var geometry = new THREE.TubeGeometry(
     lcurve, //path
     20, //segments
-    thisBranch.genes.radius, //radius
+    thisBranch.radius, //radius
     8, //radiusSegments
     true //opened
   );
+
+  //  modify next segment's radius
+  thisBranch.spawnBranch.radius = thisBranch.spawnBranch.radius * thisBranch.tree.genes.radiusDimP;
 
   var tube = new THREE.Mesh(geometry, this.material);
   scene.add(tube);
@@ -74,24 +73,24 @@ Branch.prototype.grow = function (scene) {
   }
 
   function newPos(dimension) {
-    return thisBranch.topPoint[dimension] + (thisBranch.direction[dimension] * thisBranch.genes.segmentLenght);
+    return thisBranch.topPoint[dimension] + (thisBranch.direction[dimension] * thisBranch.tree.genes.segmentLenght);
   }
 
-  if (thisBranch.segments % thisBranch.genes.lenghtSubbranch === 0){
-    thisBranch.spawnSubB();
+  if (thisBranch.segments % thisBranch.tree.genes.lenghtSubbranch === 0) {
+    thisBranch.tree.spawnBranch(thisBranch.topPoint, thisBranch.radius);
   }
 
-  //add to segments, if segments > maxSegments then stop growing
-  if (thisBranch.segments > thisBranch.genes.maxSegments) {
+  //check if we can kill branch
+  if (thisBranch.radius <= 0){
+    return false; //kill branch
+  }
+
+  //Kill if we have reached the max number of segments
+  if (thisBranch.segments > thisBranch.tree.genes.maxSegments) {
     return false;
   } else {
+    console.log('grow;');
     return true;
   }
 
 };
-
-
-//Branch should be inside a tree and the tree should be in charge of drawing it's branches and holding the specimen's genes
-Branch.prototype.spawnSubB = function() {
-
-}
