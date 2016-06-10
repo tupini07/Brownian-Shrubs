@@ -1,13 +1,14 @@
 var scene, camera, renderer, controls;
 var tree = new Tree({
-  segmentLenght: 2,
-  maxSegmentsTrunk: 200,
-  maxSegmentsDimP: 0.5, //each child will have x% segments
-  pSubBranch: 0.5, //percentages of segments before new branch is created
-  radius: 1.0,
-  minRadius: 0.5,
-  maxDepth: 10, //max number of members in a chain of branches
-  radiusDimP: 1.0, //98% of the radius is passed between segments
+  segmentLenght: 10,
+  segmentLenghtDim: 0.98, //each segment will be x% the lenght of the last segment
+  maxSegmentsTrunk: 10, //Max segments for the trunk
+  maxSegmentsDimP: 1, //each child will have x% segments
+  pSubBranch: 0.9, //percentages of segments before new branch is created
+  radius: 5.0,
+  minRadius: 0.1, //min radius before extinsion, may never be 0
+  maxDepth: 20, //max number of members in a chain of branches
+  radiusDimP: 0.9, //x% of the radius is passed between segments
   color: 0x00fff0,
 });
 
@@ -50,10 +51,10 @@ function setup() {
   renderer.gammaOutput = true;
   renderer.shadowMap.enabled = true;
 
-  var pointLight = new THREE.PointLight( 0xffffff, 300, 300);
-  pointLight.position.set( 10, 200, 10 );
-
-  scene.add(pointLight);
+  //  var pointLight = new THREE.PointLight( 0xffffff, 200, 200);
+  //  pointLight.position.set( 100, 200, 10 );
+  //
+  //  scene.add(pointLight);
 
 
   //Floor setup

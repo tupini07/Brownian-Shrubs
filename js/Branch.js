@@ -1,9 +1,12 @@
-var Branch = function (origin, baseRadius, maxSegments, depth, tree) {
+var Branch = function (origin, baseRadius, baseSegment, maxSegments, depth, tree) {
   this.gid = Math.round(Math.random() * maxSegments);
   this.topPoint = origin;
   this.radius = baseRadius;
   this.maxSegments = maxSegments;
   this.lenghtSubbranch = tree.genes.pSubBranch !== 0 ? Math.floor(maxSegments * tree.genes.pSubBranch) : 0;
+
+  this.segmentLenght = baseSegment;
+
   this.depth = depth; //current position of the branch in chain
   this.tree = tree;
 
@@ -19,11 +22,10 @@ var Branch = function (origin, baseRadius, maxSegments, depth, tree) {
   };
 
   this.material = new THREE.MeshLambertMaterial({
-    color: tree.genes.color,
+    color: Math.floor(Math.random()*16777215),//tree.genes.color,
     side: 2,
     shading: THREE.FlatShading
   });
-  console.log(this.material);
 };
 
 
@@ -33,6 +35,8 @@ var Branch = function (origin, baseRadius, maxSegments, depth, tree) {
  */
 Branch.prototype.grow = function (scene) {
   var thisBranch = this;
+
+  console.log('Branch segment: '+ thisBranch.segments);
 
   //calculate new direction, our drawing space is a 200x200x200 cube
   var newX = newPos('x');
@@ -58,7 +62,7 @@ Branch.prototype.grow = function (scene) {
     thisBranch.tree.genes.segmentLenght, //segments
     thisBranch.radius, //radius
     8, //radiusSegments
-    false //opened
+    true //opened, muuuch more efficient but not so nice
   );
 
   //  modify next segment's radius
@@ -80,11 +84,14 @@ Branch.prototype.grow = function (scene) {
   }
 
   function newPos(dimension) {
-    return thisBranch.topPoint[dimension] + (thisBranch.direction[dimension] * thisBranch.tree.genes.segmentLenght);
+    return thisBranch.topPoint[dimension] + (thisBranch.direction[dimension] * thisBranch.segmentLenght);
   }
 
+  //calculate segment lenght for new segment
+  thisBranch.segmentLenght = thisBranch.segmentLenght * thisBranch.tree.genes.segmentLenghtDim;
+
   if (thisBranch.lenghtSubbranch !== 0 && thisBranch.segments % thisBranch.lenghtSubbranch === 0) {
-    thisBranch.tree.spawnBranch(thisBranch.topPoint, thisBranch.radius, this.maxSegments, this.depth);
+    thisBranch.tree.spawnBranch(thisBranch.topPoint, thisBranch.radius, thisBranch.segmentLenght, this.maxSegments, this.depth);
   }
 
   //check if we can kill branch
