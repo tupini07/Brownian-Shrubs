@@ -27,7 +27,7 @@ var Branch = function (origin, baseRadius, baseSegment, maxSegments, depth, tree
     shading: THREE.FlatShading
   });
 };
-
+     
 
 /**
  * Conceptually grows and renders the branch
