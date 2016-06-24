@@ -1,6 +1,8 @@
 var Tree = function (genes) {
   this.genes = genes;
   this.branches = [];
+  this.mtwister = new MersenneTwister(genes.seed);
+
 
   //create first branch
   this.branches.push(new Branch(

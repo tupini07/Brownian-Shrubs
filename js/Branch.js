@@ -27,7 +27,7 @@ var Branch = function (origin, baseRadius, baseSegment, maxSegments, depth, tree
     shading: THREE.FlatShading
   });
 };
-     
+
 
 /**
  * Conceptually grows and renders the branch
@@ -78,9 +78,9 @@ Branch.prototype.grow = function (scene) {
   //Helper functions.
   function randomizeDir() {
     //we want our dir to be from -1 to
-    thisBranch.direction.x = (Math.random() * 2) - 1;
-    thisBranch.direction.y = (Math.random() * 2) - 1;
-    thisBranch.direction.z = (Math.random() * 2) - 1;
+    thisBranch.direction.x = (thisBranch.tree.mtwister.random() * 2) - 1;
+    thisBranch.direction.y = (thisBranch.tree.mtwister.random() * 2) - 1;
+    thisBranch.direction.z = (thisBranch.tree.mtwister.random() * 2) - 1;
   }
 
   function newPos(dimension) {

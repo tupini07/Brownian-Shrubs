@@ -10,6 +10,7 @@ var tree = new Tree({
   maxDepth: 20, //max number of members in a chain of branches
   radiusDimP: 0.9, //x% of the radius is passed between segments
   color: 0x00fff0,
+  seed: 12345, //seed for random number generator
 });
 
 setup();
@@ -73,6 +74,9 @@ function setupDatGUI() {
         break;
       case 'color':
         //gui.add(tree.genes, gene); //we don't want color to be custom
+        break;
+      case 'seed':
+        gui.add(tree.genes, gene).min(0).max(99999999999).step(0.01); //maybe a max is not so good idea but well...
         break;
       default:
         gui.add(tree.genes, gene).min(0).max(100).step(1);
