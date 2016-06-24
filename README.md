@@ -17,3 +17,4 @@ All the parameters that end in `Dim` or `DimP` represent a percentage an it's va
 - **minRadius:** If a segment has less radius than this it will not be drawn and the growth of the branch to which it belongs stops.
 - **maxDepth:** The maximum number of sub-branches the trunk can have (the sub-branch of the sub-branch of, etc..)
 - **color:** For the moment this is not implemented but it represent the starting color of the trunk and a value between *0* and *16777215* (which is *0xffffff*)
+- **seed:** The seed for the p-random number generator
