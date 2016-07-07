@@ -18,3 +18,7 @@ All the parameters that end in `Dim` or `DimP` represent a percentage an it's va
 - **maxDepth:** The maximum number of sub-branches the trunk can have (the sub-branch of the sub-branch of, etc..)
 - **color:** For the moment this is not implemented but it represent the starting color of the trunk and a value between *0* and *16777215* (which is *0xffffff*)
 - **seed:** The seed for the p-random number generator
+
+## Todo
+- Make it possible to export tree model in dae (or whatever) format.
+- Be able to specify amount of trees in genetic params

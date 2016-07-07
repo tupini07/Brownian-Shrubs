@@ -27,12 +27,26 @@
   <script src="js/Branch.js"></script>
   <script src="js/Tree.js"></script>
 
-  <script src="js/main.js"></script>
+  <script src="js/ManualParams.js"></script>
 
   <div style="position: absolute; top: 30px; width: 100%; text-align: center; color: rgb(28, 26, 26); background-color: transparent; z-index: 1; font-family: monospace;">
-    Left click and drag to rotate. Right click and drag to pan.
+    Left click and drag to rotate. Right click and drag to pan. Scroll wheel for zoom.
   </div>
 
+  <div id="menuCont" style="position: absolute; top: 0; width: 100%; height: 100%; background-color: rgba(76, 76, 77, 0.64); z-index: 2;">
+    <button style="position: absolute; top: 45%; left: 42%; z-index: 3;" onclick="closeMenu()">Manual Parameters</button>
+    <button style="position: absolute; top: 45%; left: 52%; z-index: 3;" onclick="mvtGen()">Genetic Parameters</button>
+  </div>
+
+  <script type="text/javascript">
+  function closeMenu() {
+    document.getElementById('menuCont').style.display = 'none';
+  }
+
+  function mvtGen(){
+    location.href = 'genp.html';
+  }
+  </script>
 </body>
 
 </html>

@@ -1,0 +1,53 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Brownian Shrubs</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #fff;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="js/lib/MersenneTwister.js"></script>
+
+  <script src="js/lib/three.js"></script>
+  <script src="js/lib/FirstPersonControls.js"></script>
+  <script src="js/lib/OrbitControls.js"></script>
+  <script src="js/lib/DAT.GUI.min.js"></script>
+
+  <script src="js/Branch.js"></script>
+  <script src="js/Tree.js"></script>
+
+  <script src="js/GeneticParams.js"></script>
+
+  <div style="position: absolute; top: 30px; width: 100%; text-align: center; color: rgb(28, 26, 26); background-color: transparent; z-index: 1; font-family: monospace;">
+    Blue tree preserves genes from last generation (is never mutated)
+    <br /> Left click and drag to rotate. Right click and drag to pan. Scroll wheel for zoom.
+  </div>
+
+  <button style="position: absolute; top: 1%; left: 1%; z-index: 2;" onclick="backToM()">Back</button>
+
+  <div style="position: absolute; bottom: 2%; z-index: 2; width: 100%; text-align: center; color: rgb(28, 26, 26); background-color: transparent; font-family: monospace;">
+    Choose one when ready, next generation will be based on your choice's genes <br /><br />
+    <button onclick="ochooseTree('blue')" id="blueFBtn">Blue Floor</button>
+    <button onclick="ochooseTree('green')" id="greenFBtn">Green Floor</button>
+    <button onclick="ochooseTree('red')" id="redFBtn">Red Floor</button>
+  </div>
+
+  <script type="text/javascript">
+    function backToM() {
+      location.href = 'index.html';
+    }
+  </script>
+</body>
+
+</html>

@@ -43,9 +43,9 @@ Branch.prototype.grow = function (scene) {
   var newY = newPos('y');
   var newZ = newPos('z');
 
-  if (newY < 0 || newY > 200 ||
-    newZ < -100 || newZ > 100 ||
-    newX < -100 || newX > 100) {
+  if (newY < 0 || newY > 300 ){
+    // newZ < -100 || newZ > 100 ||
+    // newX < -100 || newX > 100) {
     randomizeDir();
     return true;
   } else {

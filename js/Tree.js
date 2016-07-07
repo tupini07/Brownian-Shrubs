@@ -1,4 +1,9 @@
-var Tree = function (genes) {
+/**
+ * Tree 'class' constructure. Starts a tree at a given point with given genes
+ * @param {object} genes    The genes that rule the Tree's growth. See README for list of options
+ * @param {THREE.Vector3} position The Vector3 from which the trunk sprouts
+ */
+var Tree = function (genes, position) {
   this.genes = genes;
   this.branches = [];
   this.mtwister = new MersenneTwister(genes.seed);
@@ -6,7 +11,7 @@ var Tree = function (genes) {
 
   //create first branch
   this.branches.push(new Branch(
-    new THREE.Vector3(0, 0, 0),
+    position,
     genes.radius,
     genes.segmentLenght,
     genes.maxSegmentsTrunk,
