@@ -23,7 +23,7 @@ var ochooseTree;
     segmentLenghtDim: 0.98, //each segment will be x% the lenght of the last segment
     maxSegmentsTrunk: 10, //Max segments for the trunk
     maxSegmentsDimP: 1, //each child will have x% segments
-    pSubBranch: 0.9, //percentages of segments before new branch is created
+    pSubBranch: 0.69, //percentages of segments before new branch is created
     radius: 5.0,
     minRadius: 0.1, //min radius before extinsion, may never be 0
     maxDepth: 20, //max number of members in a chain of branches
