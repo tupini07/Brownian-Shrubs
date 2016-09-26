@@ -36,8 +36,6 @@ var Branch = function (origin, baseRadius, baseSegment, maxSegments, depth, tree
 Branch.prototype.grow = function (scene) {
   var thisBranch = this;
 
-  console.log('Branch segment: '+ thisBranch.segments);
-
   //calculate new direction, our drawing space is a 200x200x200 cube
   var newX = newPos('x');
   var newY = newPos('y');
@@ -96,7 +94,6 @@ Branch.prototype.grow = function (scene) {
 
   //check if we can kill branch
   if (thisBranch.radius <= thisBranch.tree.genes.minRadius) {
-    bLog(thisBranch.gid, 'Death by radius')
     return false; //kill branch
   }
 
@@ -104,13 +101,7 @@ Branch.prototype.grow = function (scene) {
   if (thisBranch.segments > thisBranch.maxSegments) {
     return false;
   } else {
-    bLog(thisBranch.gid, 'Death by segments')
     return true;
   }
 
 };
-
-//temp
-function bLog(id, msg) {
-  console.log('Branch: ' + id + ' - ' + msg);
-}
